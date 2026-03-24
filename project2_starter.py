@@ -41,7 +41,20 @@ def load_listing_results(html_path) -> list[tuple]:
     # ==============================
     # YOUR CODE STARTS HERE
     # ==============================
-    pass
+    
+    html_file = html_path
+    with open(html_file, 'r', encoding="utf-8-sig") as f:
+        html_content = f.read()
+        soup = BeautifulSoup(html_content, 'html.parser')
+    lst = []
+    listings = soup.find_all('div', class_ = 't1jojoys')
+    ids = soup.find_all('div', class_ = 't1jojoys')
+    print('listings: ', listings)
+    print('id: ', id)
+    for i in range(len(listings)):
+        lst.append((listings[i].text.strip(), ids[i].get('id')[6:]))
+    return lst
+
     # ==============================
     # YOUR CODE ENDS HERE
     # ==============================
@@ -87,29 +100,30 @@ def create_listing_database(html_path) -> list[tuple]:
         list[tuple]: A list of tuples. Each tuple contains:
         (listing_title, listing_id, policy_number, host_type, host_name, room_type, location_rating)
     """
+    
     # TODO: Implement checkout logic following the instructions
     # ==============================
     # YOUR CODE STARTS HERE
     # ==============================
-    listings = load_listing_results(html_path)
-    database = []
+    # listings = load_listing_results(html_path)
+    # database = []
 
-    for listing_title, listing_id in listings: 
-        details = get_listing_details(listing_id)
-        info = details[listing_id]
+    # for listing_title, listing_id in listings: 
+    #     details = get_listing_details(listing_id)
+    #     info = details[listing_id]
 
-        row = (
-            listing_title, 
-            listing_id, 
-            info["policy_number"], 
-            info["host_type"], 
-            info["host_name"],
-            info["room_type"],
-            info["location_rating"],
-        )
-        database.append(row)
+    #     row = (
+    #         listing_title, 
+    #         listing_id, 
+    #         info["policy_number"], 
+    #         info["host_type"], 
+    #         info["host_name"],
+    #         info["room_type"],
+    #         info["location_rating"],
+    #     )
+    #     database.append(row)
     
-    return database
+    # return database
     # ==============================
     # YOUR CODE ENDS HERE
     # ==============================
@@ -128,26 +142,27 @@ def output_csv(data, filename) -> None:
     Returns:
         None
     """
-    # TODO: Implement checkout logic following the instructions
-    # ==============================
-    # YOUR CODE STARTS HERE
-    # ==============================
-    headers = [
-        "Listing Title",
-        "Listing ID",
-        "Policy Number",
-        "Host Type",
-        "Host Name",
-        "Room Type",
-        "Location Rating", 
-    ]
+    
+    # # TODO: Implement checkout logic following the instructions
+    # # ==============================
+    # # YOUR CODE STARTS HERE
+    # # ==============================
+    # headers = [
+    #     "Listing Title",
+    #     "Listing ID",
+    #     "Policy Number",
+    #     "Host Type",
+    #     "Host Name",
+    #     "Room Type",
+    #     "Location Rating", 
+    # ]
 
-    sorted_data = sorted(data, key=lambda x: x[6], reverse=True)
+    # sorted_data = sorted(data, key=lambda x: x[6], reverse=True)
 
-    with open(filename, "w", newline="", encoding="utf-8-sig") as f:
-        writer = csv.writer(f)
-        writer.writerow(headers)
-        writer.writerows(sorted_data)
+    # with open(filename, "w", newline="", encoding="utf-8-sig") as f:
+    #     writer = csv.writer(f)
+    #     writer.writerow(headers)
+    #     writer.writerows(sorted_data)
     # ==============================
     # YOUR CODE ENDS HERE
     # ==============================
@@ -221,13 +236,14 @@ class TestCases(unittest.TestCase):
     def setUp(self):
         self.base_dir = os.path.abspath(os.path.dirname(__file__))
         self.search_results_path = os.path.join(self.base_dir, "html_files", "search_results.html")
-
+        
         self.listings = load_listing_results(self.search_results_path)
         self.detailed_data = create_listing_database(self.search_results_path)
 
     def test_load_listing_results(self):
         # TODO: Check that the number of listings extracted is 18.
         # TODO: Check that the FIRST (title, id) tuple is  ("Loft in Mission District", "1944564").
+        
         self.assertEqual(len(self.listings), 18)
         self.assertEqual(self.listings[0], ("Loft in Mission District", "1944564"))
 
