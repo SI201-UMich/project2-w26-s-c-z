@@ -49,10 +49,10 @@ def load_listing_results(html_path) -> list[tuple]:
     lst = []
     listings = soup.find_all('div', class_ = 't1jojoys')
     ids = soup.find_all('div', class_ = 't1jojoys')
-    print('listings: ', listings)
-    print('id: ', id)
     for i in range(len(listings)):
-        lst.append((listings[i].text.strip(), ids[i].get('id')[6:]))
+        listing = listings[i].text.strip()
+        id = ids[i].get('id')[6:]
+        lst.append((listing, id))
     return lst
 
     # ==============================
