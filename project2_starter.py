@@ -88,7 +88,8 @@ def get_listing_details(listing_id) -> dict:
         soup = BeautifulSoup(html_content, 'html.parser')
     ans_d = {}
     inner_d ={}
-    ans_d['listing_id'] = inner_d
+    ans_d[listing_id] = inner_d
+
     host = soup.find('div', class_ = '_1k8vduze')
     policy_num = host.find('span', class_ = 'll4r2nl').text
     if policy_num:
@@ -100,11 +101,29 @@ def get_listing_details(listing_id) -> dict:
     else:
         inner_d['host_type'] = 'regular'
 
-    tag = soup.find('div', class_ = 'c6y5den')
-    host = tag.find('h2', class_ = 'hnwb2pb').text
+    host_tag = soup.find('div', class_ = 'c6y5den')
+    host = host_tag.find('h2', class_ = 'hnwb2pb').text
     inner_d['host_name'] = host[10:]
 
-    
+    room_tag = soup.find('div', class_ = '_cv5qq4')
+    room_type = room_tag.find('h2', class_ = '_14i3z6h').text
+    if 'private' in room_type.lower():
+        inner_d['room_type'] = 'Private'
+    elif 'shared' in room_type.lower():
+        inner_d['room_type'] = 'Shared'
+    else:
+        inner_d['room_type'] = 'Entire Room'
+
+    ratings_tag = soup.find_all('div', class_ = 'a3qxec')
+    rating_val = 0.0
+    for tag in ratings_tag:
+            rating = tag.find('div', class_ = '_y1ba89')
+            if rating and rating.text.strip() == "Location":
+                rating_val = rating.find('span', class_='_4oybiu').text
+    inner_d['location_rating'] = float(rating_val)
+    ans_d[listing_id] = inner_d
+    return ans_d
+
         
 
     
@@ -275,7 +294,10 @@ class TestCases(unittest.TestCase):
         html_list = ["467507", "1550913", "1944564", "4614763", "6092596"]
 
         # TODO: Call get_listing_details() on each listing id above and save results in a list.
-        results = [get_listing_details(lid) for lid in html_list]
+        results = []
+        for id in html_list:
+            results.append(get_listing_details(id))
+
         # TODO: Spot-check a few known values by opening the corresponding listing_<id>.html files.
         # 1) Check that listing 467507 has the correct policy number "STR-0005349".
         # 2) Check that listing 1944564 has the correct host type "Superhost" and room type "Entire Room".
