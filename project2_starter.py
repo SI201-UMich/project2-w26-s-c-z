@@ -37,10 +37,6 @@ def load_listing_results(html_path) -> list[tuple]:
     Returns:
         list[tuple]: A list of tuples containing (listing_title, listing_id)
     """
-    # TODO: Implement checkout logic following the instructions
-    # ==============================
-    # YOUR CODE STARTS HERE
-    # ==============================
     
     html_file = html_path
     with open(html_file, 'r', encoding="utf-8-sig") as f:
@@ -53,10 +49,6 @@ def load_listing_results(html_path) -> list[tuple]:
         id = listings[i].get('id')[6:]
         lst.append((listing, id))
     return lst
-
-    # ==============================
-    # YOUR CODE ENDS HERE
-    # ==============================
 
 
 def get_listing_details(listing_id) -> dict:
@@ -78,10 +70,6 @@ def get_listing_details(listing_id) -> dict:
             }
         }
     """
-    # TODO: Implement checkout logic following the instructions
-    # ==============================
-    # YOUR CODE STARTS HERE
-    # ==============================
     
     html_file = os.path.join("html_files", f"listing_{listing_id}.html")
     with open(html_file, 'r', encoding="utf-8-sig") as f:
@@ -104,7 +92,7 @@ def get_listing_details(listing_id) -> dict:
 
     host_tag = soup.find('div', class_ = 'c6y5den')
     host = host_tag.find('h2', class_ = 'hnwb2pb').text
-    inner_d['host_name'] = host[10:]
+    inner_d['host_name'] = host.strip()[10:]
 
     room_tag = soup.find('div', class_ = '_cv5qq4')
     room_type = room_tag.find('h2', class_ = '_14i3z6h').text
@@ -127,14 +115,10 @@ def get_listing_details(listing_id) -> dict:
                 
     inner_d['location_rating'] = float(rating_val)
     ans_d[listing_id] = inner_d
+    print(ans_d)
     return ans_d
 
-        
-
-    
-    # ==============================
-    # YOUR CODE ENDS HERE
-    # ==============================
+ 
 
 
 def create_listing_database(html_path) -> list[tuple]: 
