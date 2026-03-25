@@ -82,7 +82,8 @@ def get_listing_details(listing_id) -> dict:
     # ==============================
     # YOUR CODE STARTS HERE
     # ==============================
-    html_file = 'listing_' + listing_id +'.html'
+    
+    html_file = os.path.join("html_files", f"listing_{listing_id}.html")
     with open(html_file, 'r', encoding="utf-8-sig") as f:
         html_content = f.read()
         soup = BeautifulSoup(html_content, 'html.parser')
@@ -93,7 +94,7 @@ def get_listing_details(listing_id) -> dict:
     host = soup.find('div', class_ = '_1k8vduze')
     policy_num = host.find('span', class_ = 'll4r2nl').text
     if policy_num:
-        inner_d['policy'] = policy_num
+        inner_d['policy_number'] = policy_num
     
     host_type = soup.find('span', class_ = "_1mhorg9")
     if host_type:
@@ -114,12 +115,16 @@ def get_listing_details(listing_id) -> dict:
     else:
         inner_d['room_type'] = 'Entire Room'
 
-    ratings_tag = soup.find_all('div', class_ = 'a3qxec')
+    ratings_tag = soup.find_all('div', class_ = '_a3qxec')
+    
     rating_val = 0.0
     for tag in ratings_tag:
+            
             rating = tag.find('div', class_ = '_y1ba89')
+            
             if rating and rating.text.strip() == "Location":
-                rating_val = rating.find('span', class_='_4oybiu').text
+                rating_val = tag.find('span', class_='_4oybiu').text
+                
     inner_d['location_rating'] = float(rating_val)
     ans_d[listing_id] = inner_d
     return ans_d
