@@ -48,10 +48,9 @@ def load_listing_results(html_path) -> list[tuple]:
         soup = BeautifulSoup(html_content, 'html.parser')
     lst = []
     listings = soup.find_all('div', class_ = 't1jojoys')
-    ids = soup.find_all('div', class_ = 't1jojoys')
     for i in range(len(listings)):
-        listing = listings[i].text.strip()
-        id = ids[i].get('id')[6:]
+        listing = ' '.join(listings[i].text.split())
+        id = listings[i].get('id')[6:]
         lst.append((listing, id))
     return lst
 
@@ -83,7 +82,32 @@ def get_listing_details(listing_id) -> dict:
     # ==============================
     # YOUR CODE STARTS HERE
     # ==============================
-    pass
+    html_file = 'listing_' + listing_id +'.html'
+    with open(html_file, 'r', encoding="utf-8-sig") as f:
+        html_content = f.read()
+        soup = BeautifulSoup(html_content, 'html.parser')
+    ans_d = {}
+    inner_d ={}
+    ans_d['listing_id'] = inner_d
+    host = soup.find('div', class_ = '_1k8vduze')
+    policy_num = host.find('span', class_ = 'll4r2nl').text
+    if policy_num:
+        inner_d['policy'] = policy_num
+    
+    host_type = soup.find('span', class_ = "_1mhorg9")
+    if host_type:
+        inner_d['host_type'] = "Superhost"
+    else:
+        inner_d['host_type'] = 'regular'
+
+    tag = soup.find('div', class_ = 'c6y5den')
+    host = tag.find('h2', class_ = 'hnwb2pb').text
+    inner_d['host_name'] = host[10:]
+
+    
+        
+
+    
     # ==============================
     # YOUR CODE ENDS HERE
     # ==============================
