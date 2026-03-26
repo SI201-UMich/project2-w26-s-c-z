@@ -217,7 +217,25 @@ def avg_location_rating_by_room_type(data) -> dict:
     # ==============================
     # YOUR CODE STARTS HERE
     # ==============================
-    pass
+    room_totals = {}
+
+    for listing in data:
+        room_type = listing[5]
+        location_rating = listing[6]
+
+        if location_rating == 0.0:
+            continue
+        if room_type not in room_totals:
+            room_totals[room_type] = []
+        room_totals[room_type].append(location_rating)
+
+    averages = {}
+    for room_type, ratings in room_totals.items():
+        averages[room_type] = round(sum(ratings) / len(ratings), 1)
+
+    return averages
+
+
     # ==============================
     # YOUR CODE ENDS HERE
     # ==============================
@@ -238,7 +256,20 @@ def validate_policy_numbers(data) -> list[str]:
     # ==============================
     # YOUR CODE STARTS HERE
     # ==============================
-    pass
+    invalid_ids = []
+    pattern = r'^(20\d{2}-00\d{4}STR|STR-000\d{4})$'
+
+    for listing in data:
+        listing_id = listing[1]
+        policy_number = listing[2]
+
+        if policy_number in ("Pending", "Exempt"):
+            continue
+
+        if not re.match(pattern, policy_number):
+            invalid_ids.append(listing_id)
+
+    return invalid_ids
     # ==============================
     # YOUR CODE ENDS HERE
     # ==============================
@@ -258,7 +289,15 @@ def google_scholar_searcher(query):
     # ==============================
     # YOUR CODE STARTS HERE
     # ==============================
-    pass
+    url = "https://scholar.google.com/scholar?q=" + query
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    titles = []
+    for result in soup.find_all("h3", class_="gs_rt"):
+        titles.append(result.get_text())
+        
+    return titles
     # ==============================
     # YOUR CODE ENDS HERE
     # ==============================
