@@ -137,25 +137,25 @@ def create_listing_database(html_path) -> list[tuple]:
     # ==============================
     # YOUR CODE STARTS HERE
     # ==============================
-    # listings = load_listing_results(html_path)
-    # database = []
+    listings = load_listing_results(html_path)
+    database = []
 
-    # for listing_title, listing_id in listings: 
-    #     details = get_listing_details(listing_id)
-    #     info = details[listing_id]
+    for listing_title, listing_id in listings: 
+        details = get_listing_details(listing_id)
+        info = details[listing_id]
 
-    #     row = (
-    #         listing_title, 
-    #         listing_id, 
-    #         info["policy_number"], 
-    #         info["host_type"], 
-    #         info["host_name"],
-    #         info["room_type"],
-    #         info["location_rating"],
-    #     )
-    #     database.append(row)
+        row = (
+            listing_title, 
+            listing_id, 
+            info["policy_number"], 
+            info["host_type"], 
+            info["host_name"],
+            info["room_type"],
+            info["location_rating"],
+        )
+        database.append(row)
     
-    # return database
+    return database
     # ==============================
     # YOUR CODE ENDS HERE
     # ==============================
@@ -179,22 +179,22 @@ def output_csv(data, filename) -> None:
     # # ==============================
     # # YOUR CODE STARTS HERE
     # # ==============================
-    # headers = [
-    #     "Listing Title",
-    #     "Listing ID",
-    #     "Policy Number",
-    #     "Host Type",
-    #     "Host Name",
-    #     "Room Type",
-    #     "Location Rating", 
-    # ]
+    headers = [
+        "Listing Title",
+        "Listing ID",
+        "Policy Number",
+        "Host Type",
+        "Host Name",
+        "Room Type",
+        "Location Rating", 
+    ]
 
-    # sorted_data = sorted(data, key=lambda x: x[6], reverse=True)
+    sorted_data = sorted(data, key=lambda x: x[6], reverse=True)
 
-    # with open(filename, "w", newline="", encoding="utf-8-sig") as f:
-    #     writer = csv.writer(f)
-    #     writer.writerow(headers)
-    #     writer.writerows(sorted_data)
+    with open(filename, "w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.writer(f)
+        writer.writerow(headers)
+        writer.writerows(sorted_data)
     # ==============================
     # YOUR CODE ENDS HERE
     # ==============================
