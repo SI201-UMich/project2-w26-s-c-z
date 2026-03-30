@@ -1,7 +1,7 @@
 # SI 201 HW4 (Library Checkout System)
-# Your name: Clare Mathison
-# Your student id: 7537 9681
-# Your email: claremat@umich.edu
+# Your name: Clare Mathison, Sofia Ayala
+# Your student id: 7537 9681, 0309 8022
+# Your email: claremat@umich.edu, ayasofia@umich.edu
 # Who or what you worked with on this homework (including generative AI like ChatGPT): Sofia Ayala and Zuza Harris
 # If you worked with generative AI also add a statement for how you used it.
 # e.g.:
