@@ -80,7 +80,12 @@ def get_listing_details(listing_id) -> dict:
     ans_d[listing_id] = inner_d
 
     host = soup.find('div', class_ = '_1k8vduze')
-    policy_num = host.find('span', class_ = 'll4r2nl').text
+    if not host:
+        host = soup.find('ul', class_ = 'fhhmddr')
+        
+        policy_num = host.find('span', class_ = 'll4r2nl').text
+    else:
+        policy_num = host.find('span', class_ = 'll4r2nl').text
     if policy_num:
         inner_d['policy_number'] = policy_num
     
@@ -121,7 +126,7 @@ def get_listing_details(listing_id) -> dict:
                 
     inner_d['location_rating'] = float(rating_val)
     ans_d[listing_id] = inner_d
-    # print('ans_d:', ans_d)
+   
     return ans_d
 
  
@@ -147,7 +152,7 @@ def create_listing_database(html_path) -> list[tuple]:
     database = []
 
     for listing_title, listing_id in listings: 
-        print(listing_id)
+        # print(listing_id)
         details = get_listing_details(listing_id)
         info = details[listing_id]
 
@@ -161,7 +166,6 @@ def create_listing_database(html_path) -> list[tuple]:
             info["location_rating"],
         )
         database.append(row)
-    print('databse:', database)
     return database
     # ==============================
     # YOUR CODE ENDS HERE
