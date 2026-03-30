@@ -263,7 +263,7 @@ def validate_policy_numbers(data) -> list[str]:
         listing_id = listing[1]
         policy_number = listing[2]
 
-        if policy_number in ("Pending", "Exempt"):
+        if policy_number.lower() in ("pending", "exempt"):
             continue
 
         if not re.match(pattern, policy_number):
@@ -334,7 +334,7 @@ class TestCases(unittest.TestCase):
         self.assertEqual(results[2]["1944564"]["host_type"], "Superhost")
         self.assertEqual(results[2]["1944564"]["room_type"], "Entire Room")
         self.assertEqual(results[2]["1944564"]["location_rating"], 4.9)
-
+  
     def test_create_listing_database(self):
         # TODO: Check that each tuple in detailed_data has exactly 7 elements:
         # (listing_title, listing_id, policy_number, host_type, host_name, room_type, location_rating)
