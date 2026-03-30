@@ -108,9 +108,9 @@ def get_listing_details(listing_id) -> dict:
         room_type = room_type.text.strip()
     
     if 'private' in room_type.lower():
-        inner_d['room_type'] = 'Private'
+        inner_d['room_type'] = 'Private Room'
     elif 'shared' in room_type.lower():
-        inner_d['room_type'] = 'Shared'
+        inner_d['room_type'] = 'Shared Room'
     else:
         inner_d['room_type'] = 'Entire Room'
 
