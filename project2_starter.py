@@ -94,8 +94,14 @@ def get_listing_details(listing_id) -> dict:
     host = host_tag.find('h2', class_ = 'hnwb2pb').text
     inner_d['host_name'] = host.strip()[10:]
 
-    room_tag = soup.find('div', class_ = '_cv5qq4')
-    room_type = room_tag.find('h2', class_ = '_14i3z6h').text
+    room_type = soup.find('div', class_ = '_kh3xmo')
+    
+    if not room_type:
+        room_tag = soup.find('div', class_ = '_cv5qq4')
+        room_type = room_tag.find('h2', class_ = '_14i3z6h').text.strip()
+    else:
+        room_type = room_type.text.strip()
+    
     if 'private' in room_type.lower():
         inner_d['room_type'] = 'Private'
     elif 'shared' in room_type.lower():
@@ -115,7 +121,7 @@ def get_listing_details(listing_id) -> dict:
                 
     inner_d['location_rating'] = float(rating_val)
     ans_d[listing_id] = inner_d
-    print(ans_d)
+    # print('ans_d:', ans_d)
     return ans_d
 
  
@@ -141,6 +147,7 @@ def create_listing_database(html_path) -> list[tuple]:
     database = []
 
     for listing_title, listing_id in listings: 
+        print(listing_id)
         details = get_listing_details(listing_id)
         info = details[listing_id]
 
@@ -154,7 +161,7 @@ def create_listing_database(html_path) -> list[tuple]:
             info["location_rating"],
         )
         database.append(row)
-    
+    print('databse:', database)
     return database
     # ==============================
     # YOUR CODE ENDS HERE
